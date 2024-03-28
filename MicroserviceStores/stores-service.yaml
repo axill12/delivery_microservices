@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: store-api
+  labels:
+    tier: backend
+    app: delivery
+spec:
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 9090
+      targetPort: 9090
+      # Optional field,
+      nodePort: 30082
+  selector:
+    api: store
