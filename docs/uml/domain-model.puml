@@ -1,0 +1,101 @@
+@startuml
+!theme vibrant
+
+skinparam style strictuml
+skinparam linetype ortho
+' skinparam backgroundColor transparent
+
+hide circle
+hide empty methods
+
+class Store {
+  name : string
+  type : string
+}
+
+class Order {
+  cost : decimal
+  confirmed : boolean
+  delivered : boolean
+  orderedTime : date
+  deliveredTime : date
+  estimatedWait : long
+  /actualWait : long
+}
+
+class OrderProduct {
+  quantity : int
+}
+
+class Product {
+  name : string
+  price : decimal
+  comment : string
+}
+
+class Client {
+  username : string
+  password : Password
+  email : EmailAddress
+  name : string
+  phone : PhoneNumber
+}
+
+class Address {
+  street : string
+  apartment : string
+}
+
+class Area {
+  city : string
+  state : string
+  zipCode : int
+}
+
+interface Review {
+  rating : short
+}
+
+class OrderReview {
+  comment : string
+}
+
+class ProductReview {
+}
+
+together {
+  class Password <<value>> {
+    password : string
+  }
+
+  class EmailAddress <<value>> {
+    email : string
+  }
+
+  class PhoneNumber <<value>> {
+    number : string
+  }
+}
+
+Password -down[hidden]- EmailAddress
+EmailAddress -down[hidden]- PhoneNumber
+
+Review <|-- OrderReview
+Review <|-- ProductReview
+
+Client "1" -left- "*" Order
+Client "~*   " *-- "1" Address
+
+Order "\n\n~*" -- "1" Store
+Order "*" o-- "1..*      " Product
+(Order, Product) .. OrderProduct
+
+Store "~*    " -- "1..*" Area
+Store "1" -- "~*    " Product
+
+Address "*" o-- "1   " Area
+
+Order "1" -- "1" OrderReview
+OrderReview "1 " *-- "~* " ProductReview
+ProductReview "1    " -up- "1" OrderProduct
+@enduml

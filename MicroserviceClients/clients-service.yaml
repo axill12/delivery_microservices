@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-api
+  labels:
+    tier: backend
+    app: delivery
+spec:
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      # Optional field,
+      nodePort: 30081
+  selector:
+    api: client
